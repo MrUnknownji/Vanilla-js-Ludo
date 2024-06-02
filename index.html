@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Ludo</title>
+  </head>
+  <body>
+    <div class="outer-div">
+      <!-- Ludo board container -->
+      <div class="ludo-container">
+        <div class="big-cell red-cell">
+          <div class="token-container red-token-container">
+            <div class="token-holder" id="red-token-holder-1">
+              <span
+                class="material-symbols-outlined red-token"
+                id="red-token-1"
+              >
+                poker_chip
+              </span>
+            </div>
+            <div class="token-holder" id="red-token-holder-2">
+              <span
+                class="material-symbols-outlined red-token"
+                id="red-token-2"
+              >
+                poker_chip
+              </span>
+            </div>
+            <div class="token-holder" id="red-token-holder-3">
+              <span
+                class="material-symbols-outlined red-token"
+                id="red-token-3"
+              >
+                poker_chip
+              </span>
+            </div>
+            <div class="token-holder" id="red-token-holder-4">
+              <span
+                class="material-symbols-outlined red-token"
+                id="red-token-4"
+              >
+                poker_chip
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="small-div-container-1 small-div-container vertical-container"
+        >
+          <div class="small-div" id="small-div-11"></div>
+          <div class="small-div" id="small-div-12"></div>
+          <div class="small-div" id="small-div-13"></div>
+          <div class="small-div" id="small-div-10"></div>
+          <div class="small-div" id="small-div-gw-1"></div>
+          <div class="small-div" id="small-div-14"></div>
+          <div class="small-div" id="small-div-9"></div>
+          <div class="small-div" id="small-div-gw-2"></div>
+          <div class="small-div" id="small-div-15"></div>
+          <div class="small-div" id="small-div-8"></div>
+          <div class="small-div" id="small-div-gw-3"></div>
+          <div class="small-div" id="small-div-16"></div>
+          <div class="small-div" id="small-div-7"></div>
+          <div class="small-div" id="small-div-gw-4"></div>
+          <div class="small-div" id="small-div-17"></div>
+          <div class="small-div" id="small-div-6"></div>
+          <div class="small-div" id="small-div-gw-5"></div>
+          <div class="small-div" id="small-div-18"></div>
+        </div>
+        <div class="big-cell green-cell">
+          <div class="token-container green-token-container">
+            <div class="token-holder" id="green-token-holder-1"></div>
+            <div class="token-holder" id="green-token-holder-2"></div>
+            <div class="token-holder" id="green-token-holder-3"></div>
+            <div class="token-holder" id="green-token-holder-4"></div>
+          </div>
+        </div>
+        <div
+          class="small-div-container-2 small-div-container horizontal-container"
+        >
+          <div class="small-div" id="small-div-52"></div>
+          <div class="small-div" id="small-div-1"></div>
+          <div class="small-div" id="small-div-2"></div>
+          <div class="small-div" id="small-div-3"></div>
+          <div class="small-div" id="small-div-4"></div>
+          <div class="small-div" id="small-div-5"></div>
+          <div class="small-div" id="small-div-51"></div>
+          <div class="small-div" id="small-div-rw-1"></div>
+          <div class="small-div" id="small-div-rw-2"></div>
+          <div class="small-div" id="small-div-rw-3"></div>
+          <div class="small-div" id="small-div-rw-4"></div>
+          <div class="small-div" id="small-div-rw-5"></div>
+          <div class="small-div" id="small-div-50"></div>
+          <div class="small-div" id="small-div-49"></div>
+          <div class="small-div" id="small-div-48"></div>
+          <div class="small-div" id="small-div-47"></div>
+          <div class="small-div" id="small-div-46"></div>
+          <div class="small-div" id="small-div-45"></div>
+        </div>
+        <div class="center-winner-div"></div>
+        <div
+          class="small-div-container-3 small-div-container horizontal-container"
+        >
+          <div class="small-div" id="small-div-19"></div>
+          <div class="small-div" id="small-div-20"></div>
+          <div class="small-div" id="small-div-21"></div>
+          <div class="small-div" id="small-div-22"></div>
+          <div class="small-div" id="small-div-23"></div>
+          <div class="small-div" id="small-div-24"></div>
+          <div class="small-div" id="small-div-yw-5"></div>
+          <div class="small-div" id="small-div-yw-4"></div>
+          <div class="small-div" id="small-div-yw-3"></div>
+          <div class="small-div" id="small-div-yw-2"></div>
+          <div class="small-div" id="small-div-yw-1"></div>
+          <div class="small-div" id="small-div-25"></div>
+          <div class="small-div" id="small-div-31"></div>
+          <div class="small-div" id="small-div-30"></div>
+          <div class="small-div" id="small-div-29"></div>
+          <div class="small-div" id="small-div-28"></div>
+          <div class="small-div" id="small-div-27"></div>
+          <div class="small-div" id="small-div-26"></div>
+        </div>
+        <div class="big-cell blue-cell">
+          <div class="token-container blue-token-container">
+            <div class="token-holder" id="blue-token-holder-1"></div>
+            <div class="token-holder" id="blue-token-holder-2"></div>
+            <div class="token-holder" id="blue-token-holder-3"></div>
+            <div class="token-holder" id="blue-token-holder-4"></div>
+          </div>
+        </div>
+        <div
+          class="small-div-container-4 small-div-container vertical-container"
+        >
+          <div class="small-div" id="small-div-44"></div>
+          <div class="small-div" id="small-div-bw-5"></div>
+          <div class="small-div" id="small-div-32"></div>
+          <div class="small-div" id="small-div-43"></div>
+          <div class="small-div" id="small-div-bw-4"></div>
+          <div class="small-div" id="small-div-33"></div>
+          <div class="small-div" id="small-div-42"></div>
+          <div class="small-div" id="small-div-bw-3"></div>
+          <div class="small-div" id="small-div-34"></div>
+          <div class="small-div" id="small-div-41"></div>
+          <div class="small-div" id="small-div-bw-2"></div>
+          <div class="small-div" id="small-div-35"></div>
+          <div class="small-div" id="small-div-40"></div>
+          <div class="small-div" id="small-div-bw-1"></div>
+          <div class="small-div" id="small-div-36"></div>
+          <div class="small-div" id="small-div-39"></div>
+          <div class="small-div" id="small-div-38"></div>
+          <div class="small-div" id="small-div-37"></div>
+        </div>
+        <div class="big-cell yellow-cell">
+          <div class="token-container yellow-token-container">
+            <div class="token-holder" id="yellow-token-holder-1">
+              <span
+                class="material-symbols-outlined yellow-token"
+                id="yellow-token-1"
+              >
+                poker_chip
+              </span>
+            </div>
+            <div class="token-holder" id="yellow-token-holder-2">
+              <span
+                class="material-symbols-outlined yellow-token"
+                id="yellow-token-2"
+              >
+                poker_chip
+              </span>
+            </div>
+            <div class="token-holder" id="yellow-token-holder-3">
+              <span
+                class="material-symbols-outlined yellow-token"
+                id="yellow-token-3"
+              >
+                poker_chip
+              </span>
+            </div>
+            <div class="token-holder" id="yellow-token-holder-4">
+              <span
+                class="material-symbols-outlined yellow-token"
+                id="yellow-token-4"
+              >
+                poker_chip
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dice and player name container -->
+      <div class="dice-container">
+        <div class="dice-div">
+          <span class="material-symbols-outlined"> fiber_manual_record </span>
+        </div>
+        <font class="next-player-txt">Next Player</font>
+      </div>
+    </div>
+  </body>
+</html>

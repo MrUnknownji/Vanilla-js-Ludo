@@ -1,0 +1,194 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: large;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 18;
+  user-select: none;
+  cursor: pointer;
+}
+
+.small-div,
+.token-holder,
+.center-winner-div,
+.dice-div {
+  position: relative;
+}
+
+body {
+  background-color: #131515;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  color: white;
+  padding: 20px;
+}
+
+.outer-div {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+}
+
+.ludo-container {
+  background-image: url("./img/LudoBgImage.jpg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 85vh;
+  height: 85vh;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: repeat(15, auto);
+  grid-template-rows: repeat(15, auto);
+  border: 2px solid black;
+}
+
+.dice-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.dice-div {
+  background-color: blue;
+  border: 1px solid black;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap-reverse;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.dice-div[rotate] {
+  animation: rotate 250ms ease-in-out;
+}
+
+.next-player-txt {
+  user-select: none;
+  font-size: x-large;
+}
+
+.big-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.token-holder {
+  border-radius: 50%;
+}
+
+.token-container {
+  width: 50%;
+  height: 50%;
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns: auto auto;
+  row-gap: 10%;
+  column-gap: 20%;
+}
+
+.red-cell,
+.green-cell,
+.small-div-container-1 {
+  grid-row: 1 / span 6;
+}
+
+.red-cell,
+.small-div-container-2,
+.blue-cell {
+  grid-column: 1 / span 6;
+}
+
+.small-div-container-1,
+.center-winner-div,
+.small-div-container-4 {
+  grid-column: 7 / span 3;
+}
+
+.green-cell,
+.small-div-container-3,
+.yellow-cell {
+  grid-column: 10 / span 6;
+}
+
+.small-div-container-2,
+.center-winner-div,
+.small-div-container-3 {
+  grid-row: 7 / span 3;
+}
+
+.blue-cell,
+.small-div-container-4,
+.yellow-cell {
+  grid-row: 10 / span 6;
+}
+
+.vertical-container {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(6, auto);
+}
+
+.horizontal-container {
+  display: grid;
+  grid-template-rows: repeat(3, auto);
+  grid-template-columns: repeat(6, auto);
+}
+.red-token,
+.green-token,
+.blue-token,
+.yellow-token {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 35px;
+}
+.red-token {
+  color: #5b0000;
+}
+
+.green-token {
+  color: rgb(17, 64, 17);
+}
+
+.blue-token {
+  color: rgb(1, 1, 72);
+}
+
+.yellow-token {
+  color: rgb(82, 82, 0);
+}
+
+span[highlight] {
+  animation: scaleInOut 1s ease alternate infinite;
+}
+@keyframes rotate {
+  to {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
+@keyframes scaleInOut {
+  100% {
+    scale: 1.05;
+    color: #995151;
+  }
+}
