@@ -51,6 +51,8 @@ body {
   grid-template-columns: repeat(15, auto);
   grid-template-rows: repeat(15, auto);
   border: 2px solid black;
+  position: relative;
+  overflow: hidden;
 }
 
 .dice-container {
@@ -63,7 +65,7 @@ body {
 }
 
 .dice-div {
-  background-color: blue;
+  background-color: red;
   border: 1px solid black;
   width: 70px;
   height: 70px;
@@ -74,6 +76,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
+  color: rgb(32, 32, 32);
 }
 
 .dice-div[rotate] {
@@ -163,21 +166,48 @@ body {
   font-size: 35px;
 }
 .red-token {
-  color: #5b0000;
+  color: maroon;
 }
 
 .green-token {
-  color: rgb(17, 64, 17);
+  color: rgb(19, 121, 19);
 }
 
 .blue-token {
-  color: rgb(1, 1, 72);
+  color: blue;
 }
 
 .yellow-token {
-  color: rgb(82, 82, 0);
+  color: goldenrod;
 }
-
+.red-border,
+.green-border,
+.yellow-border,
+.blue-border {
+  position: absolute;
+  height: 40%;
+  width: 40%;
+  border: 35px solid transparent;
+}
+.highlight {
+  animation: borderHighlight 500ms ease alternate infinite;
+}
+.red-border {
+  top: 0;
+  left: 0;
+}
+.green-border {
+  top: 0;
+  right: 0;
+}
+.yellow-border {
+  bottom: 0;
+  right: 0;
+}
+.blue-border {
+  bottom: 0;
+  left: 0;
+}
 span[highlight] {
   animation: scaleInOut 1s ease alternate infinite;
 }
@@ -190,5 +220,10 @@ span[highlight] {
   100% {
     scale: 1.05;
     color: #995151;
+  }
+}
+@keyframes borderHighlight {
+  100% {
+    border-color: white;
   }
 }

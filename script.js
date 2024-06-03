@@ -1,6 +1,9 @@
 let diceDiv = document.querySelector(".dice-div");
 diceDiv.addEventListener("click", diceClickHandler);
+let nextPlayerTextContainer = document.querySelector(".next-player-txt");
 let randomValue = 0;
+let currentPlayer = "red";
+let nextPlayer = "green";
 
 const centerDiv = document.querySelector(".center-winner-div");
 let shouldMove = false;
@@ -19,6 +22,10 @@ let red1WinPosition = 0,
   red2WinPosition = 0,
   red3WinPosition = 0,
   red4WinPosition = 0;
+let red1TotalPosition = 0,
+  red2TotalPosition = 0,
+  red3TotalPosition = 0,
+  red4TotalPosition = 0;
 const redToken1Holder = document.getElementById("red-token-holder-1");
 const redToken2Holder = document.getElementById("red-token-holder-2");
 const redToken3Holder = document.getElementById("red-token-holder-3");
@@ -43,7 +50,6 @@ let yellow1TotalPosition = 0,
   yellow2TotalPosition = 0,
   yellow3TotalPosition = 0,
   yellow4TotalPosition = 0;
-
 const yellowToken1Holder = document.getElementById("yellow-token-holder-1");
 const yellowToken2Holder = document.getElementById("yellow-token-holder-2");
 const yellowToken3Holder = document.getElementById("yellow-token-holder-3");
@@ -52,6 +58,58 @@ const yellowToken1 = document.getElementById("yellow-token-1");
 const yellowToken2 = document.getElementById("yellow-token-2");
 const yellowToken3 = document.getElementById("yellow-token-3");
 const yellowToken4 = document.getElementById("yellow-token-4");
+
+const greenStartPosition = 14;
+const greenWinningDivsArray = [];
+let greenWinDiceCount = 0;
+let currentGreen1Position = 0,
+  currentGreen2Position = 0,
+  currentGreen3Position = 0,
+  currentGreen4Position = 0;
+let green1WinPosition = 0,
+  green2WinPosition = 0,
+  green3WinPosition = 0,
+  green4WinPosition = 0;
+let green1TotalPosition = 0,
+  green2TotalPosition = 0,
+  green3TotalPosition = 0,
+  green4TotalPosition = 0;
+const greenToken1Holder = document.getElementById("green-token-holder-1");
+const greenToken2Holder = document.getElementById("green-token-holder-2");
+const greenToken3Holder = document.getElementById("green-token-holder-3");
+const greenToken4Holder = document.getElementById("green-token-holder-4");
+const greenToken1 = document.getElementById("green-token-1");
+const greenToken2 = document.getElementById("green-token-2");
+const greenToken3 = document.getElementById("green-token-3");
+const greenToken4 = document.getElementById("green-token-4");
+
+const blueStartPosition = 40;
+const blueWinningDivsArray = [];
+let blueWinDiceCount = 0;
+let currentBlue1Position = 0,
+  currentBlue2Position = 0,
+  currentBlue3Position = 0,
+  currentBlue4Position = 0;
+let blue1WinPosition = 0,
+  blue2WinPosition = 0,
+  blue3WinPosition = 0,
+  blue4WinPosition = 0;
+let blue1TotalPosition = 0,
+  blue2TotalPosition = 0,
+  blue3TotalPosition = 0,
+  blue4TotalPosition = 0;
+const blueToken1Holder = document.getElementById("blue-token-holder-1");
+const blueToken2Holder = document.getElementById("blue-token-holder-2");
+const blueToken3Holder = document.getElementById("blue-token-holder-3");
+const blueToken4Holder = document.getElementById("blue-token-holder-4");
+const blueToken1 = document.getElementById("blue-token-1");
+const blueToken2 = document.getElementById("blue-token-2");
+const blueToken3 = document.getElementById("blue-token-3");
+const blueToken4 = document.getElementById("blue-token-4");
+let redBorder = document.querySelector(".red-border");
+let greenBorder = document.querySelector(".green-border");
+let yellowBorder = document.querySelector(".yellow-border");
+let blueBorder = document.querySelector(".blue-border");
 
 for (let i = 1; i <= 52; i++) {
   const element = document.getElementById(`small-div-${i}`);
@@ -66,6 +124,16 @@ for (let i = 1; i <= 5; i++) {
 for (let i = 1; i <= 5; i++) {
   const element = document.getElementById(`small-div-yw-${i}`);
   yellowWinningDivsArray.push(element);
+}
+
+for (let i = 1; i <= 5; i++) {
+  const element = document.getElementById(`small-div-gw-${i}`);
+  greenWinningDivsArray.push(element);
+}
+
+for (let i = 1; i <= 5; i++) {
+  const element = document.getElementById(`small-div-bw-${i}`);
+  blueWinningDivsArray.push(element);
 }
 
 redToken1.addEventListener("click", () => {
@@ -94,8 +162,34 @@ yellowToken4.addEventListener("click", () => {
   handleTokenClick(4, "yellow");
 });
 
+greenToken1.addEventListener("click", () => {
+  handleTokenClick(1, "green");
+});
+greenToken2.addEventListener("click", () => {
+  handleTokenClick(2, "green");
+});
+greenToken3.addEventListener("click", () => {
+  handleTokenClick(3, "green");
+});
+greenToken4.addEventListener("click", () => {
+  handleTokenClick(4, "green");
+});
+
+blueToken1.addEventListener("click", () => {
+  handleTokenClick(1, "blue");
+});
+blueToken2.addEventListener("click", () => {
+  handleTokenClick(2, "blue");
+});
+blueToken3.addEventListener("click", () => {
+  handleTokenClick(3, "blue");
+});
+blueToken4.addEventListener("click", () => {
+  handleTokenClick(4, "blue");
+});
+
 function handleTokenClick(tokenNumber, color) {
-  if (shouldMove) {
+  if (getShouldMove(tokenNumber, color) && shouldMove) {
     const currentPos = getCurrentPosition(tokenNumber, color);
     if (randomValue === 6 && currentPos === 0) {
       moveTokenToStart(tokenNumber, color);
@@ -105,24 +199,38 @@ function handleTokenClick(tokenNumber, color) {
       shouldMove = false;
     }
   }
+  removeHighlight();
 }
 
 function diceClickHandler() {
+  removeHighlight();
   randomValue = Math.floor(Math.random() * 6) + 1;
+  setCurrentPlayer();
+  setNextPlayer(randomValue, currentPlayer);
   updateDiceDisplay(randomValue);
   shouldMove = true;
+  makeHighlight(currentPlayer);
 }
-function makeRedHighlight(color) {
-  const tokens = getAllTokens(color);
-  tokens.forEach((token) => token.setAttribute("highlight", true));
+
+function makeHighlight(color) {
+  const currentBorder = getCurrentBorder(color);
+  currentBorder.classList.add("highlight");
 }
-function removeRedHighlight(color) {
-  const tokens = getAllTokens(color);
-  tokens.forEach((token) => token.removeAttribute("highlight", true));
+
+function removeHighlight() {
+  redBorder.classList.remove("highlight");
+  greenBorder.classList.remove("highlight");
+  yellowBorder.classList.remove("highlight");
+  blueBorder.classList.remove("highlight");
 }
 
 function updateDiceDisplay(value) {
   diceDiv.innerHTML = null;
+  diceDiv.style.backgroundColor = currentPlayer;
+  nextPlayerTextContainer.innerText = `Next player: ${getNextPlayer(
+    currentPlayer
+  )}`;
+
   for (let i = 1; i <= value; i++) {
     const dotSpan = document.createElement("span");
     dotSpan.classList.add("material-symbols-outlined");
@@ -146,30 +254,19 @@ function moveTokenToStart(tokenNumber, color) {
 
 function moveToken(currentPosition, tokenNumber, color) {
   const nextPosition = currentPosition + randomValue;
-  if (color == "red") {
-    if (nextPosition < 52) {
-      updateTokenPosition(currentPosition, nextPosition, tokenNumber, color);
-    } else {
-      handleWinningMove(currentPosition, randomValue, tokenNumber, color);
-    }
-  } else if (color == "yellow") {
-    const totalCurrentPosition = getTotalCurrentPosition(tokenNumber, color);
-    if (totalCurrentPosition + randomValue < 78) {
-      updateTokenPosition(currentPosition, nextPosition, tokenNumber, color);
-      setTotalCurrentPosition(
-        tokenNumber,
-        totalCurrentPosition + randomValue,
-        color
-      );
-    } else {
-      handleWinningMove(currentPosition, randomValue, tokenNumber, color);
-    }
+  const totalCurrentPosition =
+    getTotalCurrentPosition(tokenNumber, color) + randomValue;
+  setTotalCurrentPosition(tokenNumber, totalCurrentPosition, color);
+  if (totalCurrentPosition < getTotalCurrentPositionBreakValue(color)) {
+    updateTokenPosition(currentPosition, nextPosition, tokenNumber, color);
+  } else {
+    handleWinningMove(currentPosition, randomValue, tokenNumber, color);
   }
 }
 
 function updateTokenPosition(oldPos, newPos, tokenNumber, color) {
   if (newPos > 52) {
-    newPos = newPos - 51;
+    newPos = newPos - 52;
   }
   const tokenElement = getTokenElement(tokenNumber, color);
   allSmallDivsArray[oldPos - 1].removeChild(tokenElement);
@@ -183,14 +280,15 @@ function handleWinningMove(currentPosition, value, tokenNumber, color) {
   const currentWinPosition = getWinPosition(tokenNumber, color);
   const totalWinPositions = 6;
   const newPosition = currentPosition + value - getTurningPoint(color);
+  const tokenElement = getTokenElement(tokenNumber, color);
   if (currentWinPosition > 0 && newPosition <= totalWinPositions) {
-    winDivArray[currentWinPosition - 1].innerHTML = null;
+    winDivArray[currentWinPosition - 1].removeChild(tokenElement);
   }
   if (
     currentPosition + newPosition > getTurningPoint(color) &&
     currentWinPosition == 0
   ) {
-    allSmallDivsArray[currentPosition - 1].innerHTML = null;
+    allSmallDivsArray[currentPosition - 1].removeChild(tokenElement);
   }
 
   if (newPosition <= 5) {
@@ -199,6 +297,7 @@ function handleWinningMove(currentPosition, value, tokenNumber, color) {
     );
     setTokenPosition(tokenNumber, color, getTurningPoint(color) + newPosition);
     setWinPosition(tokenNumber, color, newPosition);
+    handleOverlapStylingInsideWinDiv(newPosition, tokenNumber, color);
   }
 
   if (newPosition == totalWinPositions) {
@@ -223,13 +322,24 @@ function handleOverlapStyling(position, tokenNumber, color) {
     tokenElement.style.left = "50%";
   }
 }
-
-function handleTokenArrival(position, tokenNumber, color) {
-  console.log(color);
-  sendTokensBackExceptLast(position, color);
-  handleOverlapStyling(position, tokenNumber, color);
+function handleOverlapStylingInsideWinDiv(position, tokenNumber, color) {
+  const tokenElement = getTokenElement(tokenNumber, color);
+  const winDivArray = getWinningDivsArray(color);
+  if (winDivArray[position - 1].children.length > 0) {
+    tokenElement.style.top = `${tokenNumber * 20}%`;
+    tokenElement.style.left = `${tokenNumber * 20}%`;
+  } else {
+    tokenElement.style.top = "50%";
+    tokenElement.style.left = "50%";
+  }
 }
 
+function handleTokenArrival(position, tokenNumber, color) {
+  if (!safePositions.includes(position)) {
+    sendTokensBackExceptLast(position, color);
+  }
+  handleOverlapStyling(position, tokenNumber, color);
+}
 function getCurrentPosition(tokenNumber, color) {
   if (color == "red") {
     switch (tokenNumber) {
@@ -252,6 +362,28 @@ function getCurrentPosition(tokenNumber, color) {
         return currentYellow3Position;
       case 4:
         return currentYellow4Position;
+    }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        return currentGreen1Position;
+      case 2:
+        return currentGreen2Position;
+      case 3:
+        return currentGreen3Position;
+      case 4:
+        return currentGreen4Position;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        return currentBlue1Position;
+      case 2:
+        return currentBlue2Position;
+      case 3:
+        return currentBlue3Position;
+      case 4:
+        return currentBlue4Position;
     }
   }
 }
@@ -278,8 +410,31 @@ function getWinPosition(tokenNumber, color) {
       case 4:
         return yellow4WinPosition;
     }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        return green1WinPosition;
+      case 2:
+        return green2WinPosition;
+      case 3:
+        return green3WinPosition;
+      case 4:
+        return green4WinPosition;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        return blue1WinPosition;
+      case 2:
+        return blue2WinPosition;
+      case 3:
+        return blue3WinPosition;
+      case 4:
+        return blue4WinPosition;
+    }
   }
 }
+
 function getTokenElement(tokenNumber, color) {
   if (color == "red") {
     switch (tokenNumber) {
@@ -292,6 +447,17 @@ function getTokenElement(tokenNumber, color) {
       case 4:
         return redToken4;
     }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        return greenToken1;
+      case 2:
+        return greenToken2;
+      case 3:
+        return greenToken3;
+      case 4:
+        return greenToken4;
+    }
   } else if (color == "yellow") {
     switch (tokenNumber) {
       case 1:
@@ -302,6 +468,17 @@ function getTokenElement(tokenNumber, color) {
         return yellowToken3;
       case 4:
         return yellowToken4;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        return blueToken1;
+      case 2:
+        return blueToken2;
+      case 3:
+        return blueToken3;
+      case 4:
+        return blueToken4;
     }
   }
 }
@@ -327,6 +504,28 @@ function getTokenElementHolder(tokenNumber, color) {
         return yellowToken3Holder;
       case 4:
         return yellowToken4Holder;
+    }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        return greenToken1Holder;
+      case 2:
+        return greenToken2Holder;
+      case 3:
+        return greenToken3Holder;
+      case 4:
+        return greenToken4Holder;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        return blueToken1Holder;
+      case 2:
+        return blueToken2Holder;
+      case 3:
+        return blueToken3Holder;
+      case 4:
+        return blueToken4Holder;
     }
   }
 }
@@ -359,6 +558,36 @@ function setTokenPosition(tokenNumber, color, position) {
         break;
       case 4:
         currentYellow4Position = position;
+        break;
+    }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        currentGreen1Position = position;
+        break;
+      case 2:
+        currentGreen2Position = position;
+        break;
+      case 3:
+        currentGreen3Position = position;
+        break;
+      case 4:
+        currentGreen4Position = position;
+        break;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        currentBlue1Position = position;
+        break;
+      case 2:
+        currentBlue2Position = position;
+        break;
+      case 3:
+        currentBlue3Position = position;
+        break;
+      case 4:
+        currentBlue4Position = position;
         break;
     }
   }
@@ -394,6 +623,36 @@ function setWinPosition(tokenNumber, color, position) {
         yellow4WinPosition = position;
         break;
     }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        green1WinPosition = position;
+        break;
+      case 2:
+        green2WinPosition = position;
+        break;
+      case 3:
+        green3WinPosition = position;
+        break;
+      case 4:
+        green4WinPosition = position;
+        break;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        blue1WinPosition = position;
+        break;
+      case 2:
+        blue2WinPosition = position;
+        break;
+      case 3:
+        blue3WinPosition = position;
+        break;
+      case 4:
+        blue4WinPosition = position;
+        break;
+    }
   }
 }
 function getAllTokens(color) {
@@ -401,6 +660,10 @@ function getAllTokens(color) {
     return [redToken1, redToken2, redToken3, redToken4];
   } else if (color === "yellow") {
     return [yellowToken1, yellowToken2, yellowToken3, yellowToken4];
+  } else if (color === "green") {
+    return [greenToken1, greenToken2, greenToken3, greenToken4];
+  } else if (color === "blue") {
+    return [blueToken1, blueToken2, blueToken3, blueToken4];
   }
 }
 function getStartPosition(color) {
@@ -408,6 +671,10 @@ function getStartPosition(color) {
     return redStartPosition;
   } else if (color === "yellow") {
     return yellowStartPosition;
+  } else if (color === "green") {
+    return greenStartPosition;
+  } else if (color === "blue") {
+    return blueStartPosition;
   }
 }
 function getWinDiceCount(color) {
@@ -415,6 +682,10 @@ function getWinDiceCount(color) {
     return redWinDiceCount;
   } else if (color === "yellow") {
     return yellowWinDiceCount;
+  } else if (color === "green") {
+    return greenWinDiceCount;
+  } else if (color === "blue") {
+    return blueWinDiceCount;
   }
 }
 function incrementWinDiceCount(color) {
@@ -422,11 +693,26 @@ function incrementWinDiceCount(color) {
     redWinDiceCount += 1;
   } else if (color === "yellow") {
     yellowWinDiceCount += 1;
+  } else if (color === "green") {
+    greenWinDiceCount += 1;
+  } else if (color === "blue") {
+    blueWinDiceCount += 1;
   }
 }
 
 function getTotalCurrentPosition(tokenNumber, color) {
-  if (color == "yellow") {
+  if (color == "red") {
+    switch (tokenNumber) {
+      case 1:
+        return red1TotalPosition;
+      case 2:
+        return red2TotalPosition;
+      case 3:
+        return red3TotalPosition;
+      case 4:
+        return red4TotalPosition;
+    }
+  } else if (color == "yellow") {
     switch (tokenNumber) {
       case 1:
         return yellow1TotalPosition;
@@ -437,10 +723,47 @@ function getTotalCurrentPosition(tokenNumber, color) {
       case 4:
         return yellow4TotalPosition;
     }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        return green1TotalPosition;
+      case 2:
+        return green2TotalPosition;
+      case 3:
+        return green3TotalPosition;
+      case 4:
+        return green4TotalPosition;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        return blue1TotalPosition;
+      case 2:
+        return blue2TotalPosition;
+      case 3:
+        return blue3TotalPosition;
+      case 4:
+        return blue4TotalPosition;
+    }
   }
 }
 function setTotalCurrentPosition(tokenNumber, position, color) {
-  if (color == "yellow") {
+  if (color == "red") {
+    switch (tokenNumber) {
+      case 1:
+        red1TotalPosition = position;
+        break;
+      case 2:
+        red2TotalPosition = position;
+        break;
+      case 3:
+        red3TotalPosition = position;
+        break;
+      case 4:
+        red4TotalPosition = position;
+        break;
+    }
+  } else if (color == "yellow") {
     switch (tokenNumber) {
       case 1:
         yellow1TotalPosition = position;
@@ -453,6 +776,36 @@ function setTotalCurrentPosition(tokenNumber, position, color) {
         break;
       case 4:
         yellow4TotalPosition = position;
+        break;
+    }
+  } else if (color == "green") {
+    switch (tokenNumber) {
+      case 1:
+        green1TotalPosition = position;
+        break;
+      case 2:
+        green2TotalPosition = position;
+        break;
+      case 3:
+        green3TotalPosition = position;
+        break;
+      case 4:
+        green4TotalPosition = position;
+        break;
+    }
+  } else if (color == "blue") {
+    switch (tokenNumber) {
+      case 1:
+        blue1TotalPosition = position;
+        break;
+      case 2:
+        blue2TotalPosition = position;
+        break;
+      case 3:
+        blue3TotalPosition = position;
+        break;
+      case 4:
+        blue4TotalPosition = position;
         break;
     }
   }
@@ -473,6 +826,10 @@ function getWinningDivsArray(color) {
     return redWinningDivsArray;
   } else if (color === "yellow") {
     return yellowWinningDivsArray;
+  } else if (color === "green") {
+    return greenWinningDivsArray;
+  } else if (color === "blue") {
+    return blueWinningDivsArray;
   }
 }
 
@@ -484,7 +841,6 @@ function getAllTokensOnDiv(div) {
       tokens.push(children[i]);
     }
   }
-
   return tokens;
 }
 function sendTokensBackExceptLast(position, color) {
@@ -492,7 +848,6 @@ function sendTokensBackExceptLast(position, color) {
   const className = `${color}-token`;
   for (let i = 0; i < tokensOnDiv.length; i++) {
     const tokenElement = tokensOnDiv[i];
-    console.log(tokenElement.classList.contains(className));
     if (!tokenElement.classList.contains(className)) {
       const tokenHolder = getTokenElementHolderById(tokenElement);
       tokenHolder.appendChild(tokenElement);
@@ -519,6 +874,22 @@ function getTokenElementHolderById(tokenElement) {
       return yellowToken3Holder;
     case "yellow-token-4":
       return yellowToken4Holder;
+    case "green-token-1":
+      return greenToken1Holder;
+    case "green-token-2":
+      return greenToken2Holder;
+    case "green-token-3":
+      return greenToken3Holder;
+    case "green-token-4":
+      return greenToken4Holder;
+    case "blue-token-1":
+      return blueToken1Holder;
+    case "blue-token-2":
+      return blueToken2Holder;
+    case "blue-token-3":
+      return blueToken3Holder;
+    case "blue-token-4":
+      return blueToken4Holder;
   }
 }
 function resetTokenPosition(tokenId) {
@@ -547,5 +918,98 @@ function resetTokenPosition(tokenId) {
     case "yellow-token-4":
       currentYellow4Position = 0;
       break;
+    case "green-token-1":
+      currentGreen1Position = 0;
+      break;
+    case "green-token-2":
+      currentGreen2Position = 0;
+      break;
+    case "green-token-3":
+      currentGreen3Position = 0;
+      break;
+    case "green-token-4":
+      currentGreen4Position = 0;
+      break;
+    case "blue-token-1":
+      currentBlue1Position = 0;
+      break;
+    case "blue-token-2":
+      currentBlue2Position = 0;
+      break;
+    case "blue-token-3":
+      currentBlue3Position = 0;
+      break;
+    case "blue-token-4":
+      currentBlue4Position = 0;
+      break;
+  }
+}
+function setCurrentPlayer() {
+  if (nextPlayer == "red") {
+    currentPlayer = "red";
+  } else if (nextPlayer == "yellow") {
+    currentPlayer = "yellow";
+  } else if (nextPlayer == "green") {
+    currentPlayer = "green";
+  } else if (nextPlayer == "blue") {
+    currentPlayer = "blue";
+  }
+}
+
+function setNextPlayer(randomValue, color) {
+  if (randomValue === 6) {
+    if (color === "red") {
+      nextPlayer = "red";
+    } else if (color === "yellow") {
+      nextPlayer = "yellow";
+    } else if (color === "green") {
+      nextPlayer = "green";
+    } else if (color === "blue") {
+      nextPlayer = "blue";
+    }
+  } else {
+    if (color == "red") {
+      nextPlayer = "green";
+    } else if (color == "green") {
+      nextPlayer = "yellow";
+    } else if (color == "yellow") {
+      nextPlayer = "blue";
+    } else if (color == "blue") {
+      nextPlayer = "red";
+    }
+  }
+}
+function getNextPlayer() {
+  return nextPlayer;
+}
+
+function getShouldMove(tokenNumber, color) {
+  if (color == currentPlayer) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function getTotalCurrentPositionBreakValue(color) {
+  if (color == "red") {
+    return 51;
+  } else if (color == "green") {
+    return 64;
+  } else if (color == "yellow") {
+    return 77;
+  } else if (color == "blue") {
+    return 90;
+  }
+}
+
+function getCurrentBorder(color) {
+  if (color == "red") {
+    return redBorder;
+  } else if (color == "green") {
+    return greenBorder;
+  } else if (color == "yellow") {
+    return yellowBorder;
+  } else if (color == "blue") {
+    return blueBorder;
   }
 }
