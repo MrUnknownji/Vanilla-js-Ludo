@@ -12,8 +12,16 @@ const turningPoints = [51, 12, 25, 38];
 const allSmallDivsArray = [];
 
 const redStartPosition = 1;
-const redWinningDivsArray = [];
+const greenStartPosition = 14;
+const yellowStartPosition = 27;
+const blueStartPosition = 40;
+
 let redWinDiceCount = 0;
+let greenWinDiceCount = 0;
+let yellowWinDiceCount = 0;
+let blueWinDiceCount = 0;
+
+const redWinningDivsArray = [];
 let currentRed1Position = 0,
   currentRed2Position = 0,
   currentRed3Position = 0,
@@ -35,9 +43,7 @@ const redToken2 = document.getElementById("red-token-2");
 const redToken3 = document.getElementById("red-token-3");
 const redToken4 = document.getElementById("red-token-4");
 
-const yellowStartPosition = 27;
 const yellowWinningDivsArray = [];
-let yellowWinDiceCount = 0;
 let currentYellow1Position = 0,
   currentYellow2Position = 0,
   currentYellow3Position = 0,
@@ -59,15 +65,13 @@ const yellowToken2 = document.getElementById("yellow-token-2");
 const yellowToken3 = document.getElementById("yellow-token-3");
 const yellowToken4 = document.getElementById("yellow-token-4");
 
-const greenStartPosition = 14;
 const greenWinningDivsArray = [];
-let greenWinDiceCount = 0;
 let currentGreen1Position = 0,
   currentGreen2Position = 0,
   currentGreen3Position = 0,
   currentGreen4Position = 0;
 let green1WinPosition = 0,
-  green2WinPosition = 0,
+green2WinPosition = 0,
   green3WinPosition = 0,
   green4WinPosition = 0;
 let green1TotalPosition = 0,
@@ -83,9 +87,7 @@ const greenToken2 = document.getElementById("green-token-2");
 const greenToken3 = document.getElementById("green-token-3");
 const greenToken4 = document.getElementById("green-token-4");
 
-const blueStartPosition = 40;
 const blueWinningDivsArray = [];
-let blueWinDiceCount = 0;
 let currentBlue1Position = 0,
   currentBlue2Position = 0,
   currentBlue3Position = 0,

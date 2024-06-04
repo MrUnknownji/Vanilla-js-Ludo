@@ -227,3 +227,7 @@ span[highlight] {
     border-color: white;
   }
 }
+.overlap-token {
+  top: 25%;
+  left: 25%;
+}
